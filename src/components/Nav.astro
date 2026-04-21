@@ -1,0 +1,62 @@
+---
+const pathname = Astro.url.pathname;
+const isActive = (path: string) =>
+  path === '/' ? pathname === '/' : pathname.startsWith(path);
+---
+
+<header>
+  <nav class="container">
+    <a href="/" class="logo">nauder<span class="dot">.</span></a>
+    <ul>
+      <li><a href="/" class:list={[{ active: isActive('/') }]}>Home</a></li>
+      <li><a href="/projects" class:list={[{ active: isActive('/projects') }]}>Projects</a></li>
+      <li><a href="/contact" class:list={[{ active: isActive('/contact') }]}>Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    backdrop-filter: blur(12px);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .logo {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .dot {
+    color: var(--accent);
+  }
+
+  ul {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  ul a {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: color 0.15s;
+  }
+
+  ul a:hover,
+  ul a.active {
+    color: var(--text);
+  }
+</style>

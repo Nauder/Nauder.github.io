@@ -1,0 +1,47 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <div class="container">
+    <span class="copy">© {year} Nauder</span>
+    <ul>
+      <li><a href="https://github.com/Nauder" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/nauder" target="_blank" rel="noopener">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem 0;
+    margin-top: 4rem;
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .copy {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+  }
+
+  ul a {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  ul a:hover {
+    color: var(--text);
+  }
+</style>

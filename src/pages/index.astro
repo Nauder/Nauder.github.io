@@ -1,0 +1,318 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+
+const allProjects = await getCollection('projects');
+const featured = allProjects
+  .filter(p => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const skills = [
+  'Python', 'Apache Airflow', 'SQL', 'NoSQL', 'Trino',
+  'Apache Iceberg', 'AWS', 'Terraform', 'OCI',
+  'Docker','ETL/ELT', 'Flask', 'FastAPI', 'LangChain'
+];
+---
+
+<BaseLayout title="Home" description="Nauder Prestes — data engineer building reliable pipelines and analytics infrastructure.">
+  <section class="hero">
+    <div class="container">
+      <p class="section-label">Paraná, Brazil</p>
+      <div class="hero-heading">
+        <img src="/me.jpg" alt="Nauder" class="avatar" />
+        <h1>Hi, I'm <span class="accent">Nauder</span></h1>
+      </div>
+      <p class="subtitle">Data Engineer</p>
+      <p class="bio">
+        Data engineer and computer science master's student at UTFPR. Currently
+        building data pipelines and analytics infrastructure at Unimed with Python,
+        Apache Airflow, Trino, and Apache Iceberg. Background in backend and
+        full-stack development.
+      </p>
+      <div class="ctas">
+        <a href="/projects" class="btn btn-primary">View Projects</a>
+        <a href="/contact" class="btn btn-outline">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="skills">
+    <div class="container">
+      <p class="section-label">Technologies</p>
+      <h2>What I work with</h2>
+      <div class="skill-grid">
+        {skills.map(s => <span class="tag">{s}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="experience">
+    <div class="container">
+      <p class="section-label">Experience</p>
+      <h2>Where I've worked</h2>
+      <ul class="timeline">
+        <li>
+          <div class="role">
+            <span class="company">Cyva</span>
+            <span class="period">2025 – present</span>
+          </div>
+          <p class="position">AI Engineer</p>
+          <p class="desc">Designing and deploying LLM-powered applications, RAG pipelines, and AI agents using Python, LangChain, and cloud infrastructure.</p>
+        </li>
+        <li>
+          <div class="role">
+            <span class="company">Unimed Ponta Grossa</span>
+            <span class="period">2022 – present</span>
+          </div>
+          <p class="position">Data Science and Architecture Assistant</p>
+          <p class="desc">Building analytics infrastructure and data pipelines with Flask, Apache Airflow, Trino, Terraform, OCI, and Apache Iceberg.</p>
+        </li>
+        <li>
+          <div class="role">
+            <span class="company">Medcloud</span>
+            <span class="period">2021 - 2022</span>
+          </div>
+          <p class="position">Back End Intern</p>
+          <p class="desc">Backend development for a healthcare cloud platform using Spring Boot, Java, Terraform and AWS.</p>
+        </li>
+      </ul>
+
+      <div class="education">
+        <p class="section-label" style="margin-top: 2rem;">Education</p>
+        <ul class="timeline">
+          <li>
+            <div class="role">
+              <span class="company">UTFPR — Federal University of Technology – Paraná</span>
+              <span class="period">2025 – present</span>
+            </div>
+            <p class="position">M.Sc. Computer Science</p>
+          </li>
+          <li>
+            <div class="role">
+              <span class="company">UTFPR — Federal University of Technology – Paraná</span>
+              <span class="period">2021 – 2024</span>
+            </div>
+            <p class="position">CST in Systems Analysis and Development</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="certifications">
+        <p class="section-label" style="margin-top: 2rem;">Certifications</p>
+        <ul class="timeline">
+          <li>
+            <div class="role">
+              <span class="company"><a href="https://www.credly.com/badges/d01a55bf-d7c2-43e8-a9ce-f7e905c36d9c/linked_in_profile">Astronomer Certification DAG Authoring for Apache Airflow</a></span>
+              <span class="period">Jan 2024</span>
+            </div>
+            <p class="position">Astronomer</p>
+          </li>
+          <li>
+            <div class="role">
+              <span class="company"><a href="https://www.linkedin.com/learning/certificates/65c685306186f2f1948d1909ce419fd213e57a333624f0cb34454d0c5a0f63ae?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_certifications_details%3BfuHQQGOiTb65nGkwm6CLHg%3D%3D">Docker Foundations Professional Certificate</a></span>
+              <span class="period">Nov 2025</span>
+            </div>
+            <p class="position">Docker, Inc</p>
+          </li>
+        </ul>
+      </div>
+
+      <div class="languages">
+        <p class="section-label" style="margin-top: 2rem;">Languages</p>
+        <ul class="timeline">
+          <li>
+            <span class="company">Portuguese</span>
+            <p class="position">Native</p>
+          </li>
+          <li>
+            <span class="company">English</span>
+            <p class="position"><a href="https://cert.efset.org/7WAHX6">C2 Proficient</a></p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  {featured.length > 0 && (
+    <section class="featured">
+      <div class="container">
+        <p class="section-label">Work</p>
+        <div class="section-header">
+          <h2>Featured Projects</h2>
+          <a href="/projects" class="view-all">All projects →</a>
+        </div>
+        <div class="project-grid">
+          {featured.map(p => (
+            <ProjectCard
+              title={p.data.title}
+              description={p.data.description}
+              tags={p.data.tags}
+              slug={p.id.replace(/\.mdx?$/, '')}
+              github={p.data.github}
+              demo={p.data.demo}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 6rem 0 4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-heading {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .hero-heading h1 {
+    margin-bottom: 0;
+  }
+
+  .avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid var(--border);
+  }
+
+  h1 {
+    font-size: clamp(2.5rem, 6vw, 3.5rem);
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.03em;
+  }
+
+  .accent {
+    color: var(--accent-light);
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+
+  .bio {
+    max-width: 520px;
+    color: var(--text-muted);
+    line-height: 1.75;
+    margin-bottom: 2rem;
+  }
+
+  .ctas {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .skills {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .skills h2 {
+    margin-bottom: 1.25rem;
+  }
+
+  .skill-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .experience {
+    padding: 4rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .experience h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    border-left: 2px solid var(--border);
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .role {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.2rem;
+  }
+
+  .company {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .period {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .position {
+    font-size: 0.875rem;
+    color: var(--accent-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .desc {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .timeline a {
+    color: var(--accent-light);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .timeline a:hover {
+    color: #fff;
+  }
+
+  .featured {
+    padding: 4rem 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .view-all {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .view-all:hover {
+    color: var(--accent-light);
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+</style>
